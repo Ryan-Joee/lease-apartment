@@ -1,10 +1,8 @@
 package com.ryan.lease.web.admin.controller.apartment;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ryan.lease.common.result.Result;
-import com.ryan.lease.model.entity.FacilityInfo;
 import com.ryan.lease.model.entity.LabelInfo;
 import com.ryan.lease.model.enums.ItemType;
 import com.ryan.lease.web.admin.service.LabelInfoService;
@@ -33,9 +31,10 @@ public class LabelController {
     public Result<List<LabelInfo>> labelList(@RequestParam(required = false) ItemType type) {
         // 因为type不是必须从前端传过来的
         // 所以需要构造一个条件构造器来进行查询
-        LambdaQueryWrapper<LabelInfo> wrapper = new LambdaQueryWrapper<>();
-        Wrappers.lambdaQuery(LabelInfo.class).eq()
-        wrapper.eq(type != null, LabelInfo::getType, type);
+/*        LambdaQueryWrapper<LabelInfo> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(type != null, LabelInfo::getType, type);*/
+        LambdaQueryWrapper<LabelInfo> wrapper = Wrappers.lambdaQuery(LabelInfo.class).eq(type != null, LabelInfo::getType, type);
+
         // 将查询条件放入list()方法中.
         List<LabelInfo> labelInfoList = service.list(wrapper);
         if (labelInfoList.isEmpty()) {
