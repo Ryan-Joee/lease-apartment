@@ -1,11 +1,14 @@
 package com.ryan.lease.web.admin.controller.apartment;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ryan.lease.common.result.Result;
 import com.ryan.lease.model.entity.FacilityInfo;
 import com.ryan.lease.model.enums.ItemType;
+import com.ryan.lease.web.admin.service.FacilityInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
