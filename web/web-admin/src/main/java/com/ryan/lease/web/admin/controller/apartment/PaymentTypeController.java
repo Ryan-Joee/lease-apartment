@@ -39,10 +39,16 @@ public class PaymentTypeController {
 
     @Operation(summary = "根据ID删除支付方式")
     @DeleteMapping("deleteById")
+    /*
+    * 这是逻辑删除，并不是实际删除数据库中的数据，而是将is_deleted字段设置为1
+    * */
     public Result deletePaymentById(@RequestParam Long id) {
+        boolean result = paymentTypeService.removeById(id);
+        if (!result) {
+            return Result.fail();
+        }
         return Result.ok();
     }
-
 }
 
 
