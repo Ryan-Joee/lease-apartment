@@ -37,9 +37,6 @@ public class LabelController {
 
         // 将查询条件放入list()方法中.
         List<LabelInfo> labelInfoList = service.list(wrapper);
-        if (labelInfoList.isEmpty()) {
-            return Result.fail();
-        }
         return Result.ok(labelInfoList);
     }
 

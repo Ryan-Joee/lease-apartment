@@ -29,9 +29,6 @@ public class FacilityController {
     public Result<List<FacilityInfo>> listFacility(@RequestParam(required = false) ItemType type) {
         LambdaQueryWrapper<FacilityInfo> list = Wrappers.lambdaQuery(FacilityInfo.class).eq(type != null, FacilityInfo::getType, type);
         List<FacilityInfo> facilityInfoList = service.list(list);
-        if (facilityInfoList.isEmpty()) {
-            return Result.fail();
-        }
         return Result.ok(facilityInfoList);
     }
 
