@@ -1,7 +1,10 @@
 package com.ryan.lease.web.admin.controller.apartment;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ryan.lease.common.result.Result;
+import com.ryan.lease.common.result.ResultCodeEnum;
 import com.ryan.lease.model.entity.AttrKey;
 import com.ryan.lease.model.entity.AttrValue;
 import com.ryan.lease.web.admin.service.AttrKeyService;
@@ -56,12 +59,33 @@ public class AttrController {
     @Operation(summary = "根据id删除属性名称")
     @DeleteMapping("key/deleteById")
     public Result removeAttrKeyById(@RequestParam Long attrKeyId) {
+        if (attrKeyId == null || attrKeyId <= 0) {
+            return Result.build("属性ID无效", ResultCodeEnum.PARAM_ERROR);
+        }
+        // 删除属性名称
+        boolean result = attrKeyService.removeById(attrKeyId);
+        if (!result) {
+            return Result.fail();
+        }
+        // 删除属性值
+        LambdaQueryWrapper<AttrValue> wrapper = Wrappers.lambdaQuery(AttrValue.class).eq(AttrValue::getAttrKeyId, attrKeyId);
+        result = attrValueService.remove(wrapper);
+        if (!result) {
+            return Result.fail();
+        }
         return Result.ok();
     }
 
     @Operation(summary = "根据id删除属性值")
     @DeleteMapping("value/deleteById")
     public Result removeAttrValueById(@RequestParam Long id) {
+        if (id == null || id <= 0) {
+            return Result.build("属性ID无效", ResultCodeEnum.PARAM_ERROR);
+        }
+        boolean result = attrValueService.removeById(id);
+        if (!result) {
+            return Result.fail();
+        }
         return Result.ok();
     }
 
