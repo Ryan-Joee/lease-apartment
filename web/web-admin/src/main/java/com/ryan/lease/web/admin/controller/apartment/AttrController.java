@@ -31,6 +31,9 @@ public class AttrController {
     @Operation(summary = "新增或更新属性名称")
     @PostMapping("key/saveOrUpdate")
     public Result saveOrUpdateAttrKey(@RequestBody AttrKey attrKey) {
+        if (attrKey == null) {
+            return Result.build("属性名称为空", ResultCodeEnum.PARAM_ERROR);
+        }
         boolean result = attrKeyService.saveOrUpdate(attrKey);
         if (!result) {
             return Result.fail();

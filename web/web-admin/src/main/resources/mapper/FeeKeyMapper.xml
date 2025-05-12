@@ -4,4 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ryan.lease.web.admin.mapper.FeeKeyMapper">
 
+    <!--
+        autoMapping="true" 的作用
+        MyBatis 会自动将查询结果中未在 <result> 中声明的字段，按照字段名与 Java 对象中的属性名进行匹配并赋值。
+    -->
+    <resultMap id="FeeInfoListMap" type="com.ryan.lease.web.admin.vo.fee.FeeKeyVo" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="feeValueList" ofType="com.ryan.lease.model.entity.FeeValue" autoMapping="true">
+            <id property="id" column="fee_value_id"/>
+            <result property="name" column="fee_value_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="feeInfoList" resultMap="FeeInfoListMap">
+        select
+            k.id,
+            k.name,
+            v.id fee_value_id,
+            v.name fee_value_name,
+            v.unit,
+            v.fee_key_id
+        from fee_key k
+        left join fee_value v on k.id = v.fee_key_id and v.is_deleted = 0
+        where k.is_deleted = 0
+    </select>
 </mapper>
