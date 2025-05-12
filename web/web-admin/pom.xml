@@ -17,4 +17,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <scope>runtime</scope> <!--加上<scope>runtime</scope>，可以避免在项目打包发布时被引入-->
+        <optional>true</optional> <!--将依赖标记为可选，避免传递给其他模块-->
+    </dependency>
+    </dependencies>
 </project>
