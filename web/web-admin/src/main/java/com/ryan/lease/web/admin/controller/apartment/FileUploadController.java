@@ -40,5 +40,4 @@ public class FileUploadController {
             return Result.ok(url);
 
     }
-
 }
