@@ -35,21 +35,14 @@ public class FacilityController {
     @Operation(summary = "新增或修改配套信息")
     @PostMapping("saveOrUpdate")
     public Result saveOrUpdate(@RequestBody FacilityInfo facilityInfo) {
-        boolean result = service.saveOrUpdate(facilityInfo);
-        if (!result) {
-            return Result.fail();
-        }
+         service.saveOrUpdate(facilityInfo);
         return Result.ok();
     }
 
     @Operation(summary = "根据id删除配套信息")
     @DeleteMapping("deleteById")
     public Result removeFacilityById(@RequestParam Long id) {
-        boolean result = service.removeById(id);
-        if (!result) {
-            return Result.fail();
-        }
+        service.removeById(id);
         return Result.ok();
     }
-
 }

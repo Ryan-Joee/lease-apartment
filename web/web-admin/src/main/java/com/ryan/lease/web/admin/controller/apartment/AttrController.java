@@ -34,20 +34,14 @@ public class AttrController {
         if (attrKey == null) {
             return Result.build("属性名称为空", ResultCodeEnum.PARAM_ERROR);
         }
-        boolean result = attrKeyService.saveOrUpdate(attrKey);
-        if (!result) {
-            return Result.fail();
-        }
+        attrKeyService.saveOrUpdate(attrKey);
         return Result.ok();
     }
 
     @Operation(summary = "新增或更新属性值")
     @PostMapping("value/saveOrUpdate")
     public Result saveOrUpdateAttrValue(@RequestBody AttrValue attrValue) {
-        boolean result = attrValueService.saveOrUpdate(attrValue);
-        if (!result) {
-            return Result.fail();
-        }
+        attrValueService.saveOrUpdate(attrValue);
         return Result.ok();
     }
 
@@ -66,16 +60,10 @@ public class AttrController {
             return Result.build("属性ID无效", ResultCodeEnum.PARAM_ERROR);
         }
         // 删除属性名称
-        boolean result = attrKeyService.removeById(attrKeyId);
-        if (!result) {
-            return Result.fail();
-        }
+        attrKeyService.removeById(attrKeyId);
         // 删除属性值
         LambdaQueryWrapper<AttrValue> wrapper = Wrappers.lambdaQuery(AttrValue.class).eq(AttrValue::getAttrKeyId, attrKeyId);
-        result = attrValueService.remove(wrapper);
-        if (!result) {
-            return Result.fail();
-        }
+        attrValueService.remove(wrapper);
         return Result.ok();
     }
 
@@ -85,10 +73,7 @@ public class AttrController {
         if (id == null || id <= 0) {
             return Result.build("属性ID无效", ResultCodeEnum.PARAM_ERROR);
         }
-        boolean result = attrValueService.removeById(id);
-        if (!result) {
-            return Result.fail();
-        }
+        attrValueService.removeById(id);
         return Result.ok();
     }
 

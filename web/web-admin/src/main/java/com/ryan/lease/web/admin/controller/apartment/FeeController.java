@@ -35,20 +35,14 @@ public class FeeController {
         if (feeKey == null) {
             return Result.build("属性名称为空", ResultCodeEnum.PARAM_ERROR);
         }
-        boolean result = feeKeyService.saveOrUpdate(feeKey);
-        if (!result) {
-            return Result.fail();
-        }
+        feeKeyService.saveOrUpdate(feeKey);
         return Result.ok();
     }
 
     @Operation(summary = "保存或更新杂费值")
     @PostMapping("value/saveOrUpdate")
     public Result saveOrUpdateFeeValue(@RequestBody FeeValue feeValue) {
-        boolean result = feeValueService.saveOrUpdate(feeValue);
-        if (!result) {
-            return Result.fail();
-        }
+        feeValueService.saveOrUpdate(feeValue);
         return Result.ok();
     }
 
@@ -62,15 +56,9 @@ public class FeeController {
     @Operation(summary = "根据id删除杂费名称")
     @DeleteMapping("key/deleteById")
     public Result deleteFeeKeyById(@RequestParam Long feeKeyId) {
-        boolean result = feeKeyService.removeById(feeKeyId);
-        if (!result) {
-            return Result.fail();
-        }
+        feeKeyService.removeById(feeKeyId);
         LambdaQueryWrapper<FeeValue> wrapper = Wrappers.lambdaQuery(FeeValue.class).eq(FeeValue::getFeeKeyId, feeKeyId);
-        boolean result1 = feeValueService.remove(wrapper);
-        if (!result1) {
-            return Result.fail();
-        }
+        feeValueService.remove(wrapper);
         return Result.ok();
     }
 

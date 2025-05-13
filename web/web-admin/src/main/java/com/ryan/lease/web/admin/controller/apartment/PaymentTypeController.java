@@ -30,10 +30,7 @@ public class PaymentTypeController {
     @Operation(summary = "保存或更新支付方式")
     @PostMapping("saveOrUpdate")
     public Result saveOrUpdatePaymentType(@RequestBody PaymentType paymentType) {
-        boolean result = paymentTypeService.saveOrUpdate(paymentType);
-        if (!result) {
-            return Result.fail();
-        }
+        paymentTypeService.saveOrUpdate(paymentType);
         return Result.ok();
     }
 
@@ -43,10 +40,7 @@ public class PaymentTypeController {
     * 这是逻辑删除，并不是实际删除数据库中的数据，而是将is_deleted字段设置为1
     * */
     public Result deletePaymentById(@RequestParam Long id) {
-        boolean result = paymentTypeService.removeById(id);
-        if (!result) {
-            return Result.fail();
-        }
+        paymentTypeService.removeById(id);
         return Result.ok();
     }
 }

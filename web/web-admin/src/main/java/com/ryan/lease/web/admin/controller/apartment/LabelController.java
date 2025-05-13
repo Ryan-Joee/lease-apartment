@@ -43,20 +43,14 @@ public class LabelController {
     @Operation(summary = "新增或修改标签信息")
     @PostMapping("saveOrUpdate")
     public Result saveOrUpdateLabel(@RequestBody LabelInfo labelInfo) {
-        boolean result = service.saveOrUpdate(labelInfo);
-        if (!result) {
-            return Result.fail();
-        }
+        service.saveOrUpdate(labelInfo);
         return Result.ok();
     }
 
     @Operation(summary = "根据id删除标签信息")
     @DeleteMapping("deleteById")
     public Result deleteLabelById(@RequestParam Long id) {
-        boolean result = service.removeById(id);
-        if (!result) {
-            return Result.fail();
-        }
+        service.removeById(id);
         return Result.ok();
     }
 }
