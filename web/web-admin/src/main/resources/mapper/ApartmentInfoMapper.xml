@@ -4,4 +4,94 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ryan.lease.web.admin.mapper.ApartmentInfoMapper">
 
+    <select id="pageItem" resultType="com.ryan.lease.web.admin.vo.apartment.ApartmentItemVo">
+
+        select
+        ai.id,
+        ai.name,
+        ai.introduction,
+        ai.district_id,
+        ai.city_id,
+        ai.city_name,
+        ai.province_id,
+        ai.province_name,
+        ai.address_detail,
+        ai.latitude,
+        ai.longitude,
+        ai.phone,
+        ai.is_release,
+        ifnull(tc.cnt, 0) total_room_count,  /*所以为了正确返回数据给前端，需要给这两个字段加上ifnull()判断*/
+        ifnull(tc.cnt, 0) - ifnull(cc.cnt, 0) free_room_count
+        from
+        (
+        /*
+        使用了mybatisplus的分页插件后
+        在sql里就不需要在关注分页的逻辑
+        只需要正常查询对应的参数即可
+        */
+        select
+        id,
+        name,
+        introduction,
+        district_id,
+        city_id,
+        city_name,
+        province_id,
+        province_name,
+        address_detail,
+        latitude,
+        longitude,
+        phone,
+        is_release
+        from apartment_info
+        <where>
+            is_deleted = 0
+            <if test="queryVo.provinceId != null">
+                and provinced_id = #{queryVo.provinceId}
+            </if>
+            <if test="queryVo.cityId != null">
+                and city_id = #{queryVo.cityId}
+            </if>
+            <if test="queryVo.districtId != null">
+                and districtId = #{queryVo.districtId}
+            </if>
+        </where>
+        )ai /*别名apartment info*/
+            left join
+        (
+        /*
+        查询房间总数
+        只统计已发布的房间，业务要求
+        */
+        select
+        apartment_id,
+        count(*) cnt
+        from room_info
+        where is_deleted = 0 and is_release = 1
+        group by apartment_id
+        )tc /*别名：total count*/
+            on ai.id = tc.apartment_id
+            left join
+        (
+        /*
+        统计每个公寓的空闲房间数
+        因为直接计算每个公寓的空闲房间数不好计算
+        所以可以先计算每个公寓不空闲的房间数==> 处在签约状态内的房间
+        之后再用上面统计出来的每个公寓的房间总数 - 不空闲房间数
+        */
+        select
+        apartment_id,
+        count(*) cnt
+        from lease_agreement
+        where is_deleted = 0 and status in (2, 5)
+        group by apartment_id
+        )cc /*别名：check in count*/
+            on ai.id = cc.apartment_id
+        /*
+            这里有可能出现left join join不上的情况：
+            如这个表没有满足where 条件的租约
+            join不上就会返回nll
+        */
+
+    </select>
 </mapper>

@@ -18,7 +18,15 @@ public interface ApartmentInfoService extends IService<ApartmentInfo> {
 
     /**
      * "保存或更新公寓信息"
-     * @param apartmentSubmitVo
+     * @param apartmentSubmitVo 公寓信息
      */
     void saveOrUpdateApartment(ApartmentSubmitVo apartmentSubmitVo);
+
+    /**
+     * 根据条件分页查询公寓列表
+     * @param page 分页条件
+     * @param queryVo 分页条件
+     * @return 分页查询的结果
+     */
+    IPage<ApartmentItemVo> pageItem(Page page, ApartmentQueryVo queryVo);
 }

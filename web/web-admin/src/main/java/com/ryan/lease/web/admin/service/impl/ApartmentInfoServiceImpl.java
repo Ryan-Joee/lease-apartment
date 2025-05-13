@@ -1,12 +1,16 @@
 package com.ryan.lease.web.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ryan.lease.model.entity.*;
 import com.ryan.lease.model.enums.ItemType;
 import com.ryan.lease.web.admin.mapper.ApartmentInfoMapper;
 import com.ryan.lease.web.admin.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ryan.lease.web.admin.vo.apartment.ApartmentItemVo;
+import com.ryan.lease.web.admin.vo.apartment.ApartmentQueryVo;
 import com.ryan.lease.web.admin.vo.apartment.ApartmentSubmitVo;
 import com.ryan.lease.web.admin.vo.graph.GraphVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +29,6 @@ import java.util.List;
 public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, ApartmentInfo>
         implements ApartmentInfoService {
 
-    @Autowired
-    private ApartmentInfoService apartmentInfoService;
 
     @Autowired
     private GraphInfoService graphInfoService;
@@ -39,12 +41,13 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
 
     @Autowired
     private ApartmentFeeValueService apartmentFeeValueService;
+
     @Autowired
-    private FeeValueService feeValueService;
+    private ApartmentInfoMapper apartmentInfoMapper;
 
     /**
      * "保存或更新公寓信息"
-     * @param apartmentSubmitVo
+     * @param apartmentSubmitVo 公寓信息
      */
     @Override
     public void saveOrUpdateApartment(ApartmentSubmitVo apartmentSubmitVo) {
@@ -136,6 +139,17 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
             }
             apartmentFeeValueService.saveBatch(apartmentFeeValueList);
         }
+    }
+
+    /**
+     * 根据条件分页查询公寓列表
+     * @param page 分页条件
+     * @param queryVo 分页条件
+     * @return 分页查询的结果
+     */
+    @Override
+    public IPage<ApartmentItemVo> pageItem(Page page, ApartmentQueryVo queryVo) {
+        return apartmentInfoMapper.pageItem(page, queryVo);
     }
 }
 

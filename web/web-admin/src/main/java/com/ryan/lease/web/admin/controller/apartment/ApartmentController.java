@@ -37,9 +37,9 @@ public class ApartmentController {
     @Operation(summary = "根据条件分页查询公寓列表")
     @GetMapping("pageItem")
     public Result<IPage<ApartmentItemVo>> pageItem(@RequestParam long current, @RequestParam long size, ApartmentQueryVo queryVo) {
-/*        Page page = new Page(current, size);
-        IPage<ApartmentItemVo> result = service.pageItem(page, queryVo);*/
-        return Result.ok();
+        Page page = new Page(current, size);
+        IPage<ApartmentItemVo> result = service.pageItem(page, queryVo);
+        return Result.ok(result);
     }
 
     @Operation(summary = "根据ID获取公寓详细信息")
