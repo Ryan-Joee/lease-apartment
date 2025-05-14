@@ -1,6 +1,9 @@
 package com.ryan.lease.web.admin.controller.apartment;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ryan.lease.common.result.Result;
 import com.ryan.lease.model.entity.ApartmentInfo;
@@ -59,13 +62,20 @@ public class ApartmentController {
     @Operation(summary = "根据id修改公寓发布状态")
     @PostMapping("updateReleaseStatusById")
     public Result updateReleaseStatusById(@RequestParam Long id, @RequestParam ReleaseStatus status) {
+        LambdaUpdateWrapper<ApartmentInfo> updateWrapper = Wrappers.lambdaUpdate(ApartmentInfo.class)
+                .eq(ApartmentInfo::getId, id)
+                .set(ApartmentInfo::getIsRelease, status);
+        service.update(updateWrapper);
         return Result.ok();
     }
 
     @Operation(summary = "根据区县id查询公寓信息列表")
     @GetMapping("listInfoByDistrictId")
     public Result<List<ApartmentInfo>> listInfoByDistrictId(@RequestParam Long id) {
-        return Result.ok();
+        LambdaQueryWrapper<ApartmentInfo> queryWrapper = Wrappers.lambdaQuery(ApartmentInfo.class)
+                .eq(ApartmentInfo::getDistrictId, id);
+        List<ApartmentInfo> list = service.list(queryWrapper);
+        return Result.ok(list);
     }
 }
 
