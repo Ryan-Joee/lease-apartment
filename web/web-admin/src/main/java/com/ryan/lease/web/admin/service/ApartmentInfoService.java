@@ -36,4 +36,10 @@ public interface ApartmentInfoService extends IService<ApartmentInfo> {
      * @return ApartmentDetailVo
      */
     ApartmentDetailVo getDetailById(Long id);
+
+    /**
+     * 根据id删除公寓信息
+     * @param id 公寓id
+     */
+    void removeAartmentById(Long id);
 }

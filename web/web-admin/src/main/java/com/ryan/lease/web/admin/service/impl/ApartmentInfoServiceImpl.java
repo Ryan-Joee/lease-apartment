@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ryan.lease.common.exception.LeaseException;
+import com.ryan.lease.common.result.ResultCodeEnum;
 import com.ryan.lease.model.entity.*;
 import com.ryan.lease.model.enums.ItemType;
 import com.ryan.lease.web.admin.mapper.*;
@@ -59,6 +61,9 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
 
     @Autowired
     private FeeValueMapper feeValueMapper;
+
+    @Autowired
+    private RoomInfoMapper roomInfoMapper;
 
     /**
      * "保存或更新公寓信息"
@@ -177,7 +182,7 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
         // 1. 查询公寓信息
         ApartmentInfo apartmentInfo = apartmentInfoMapper.selectById(id);
         // 2. 查询图片列表
-        List<GraphVo> graphVoList2 = graphInfoMapper.selectListByItemTypeAndId(ItemType.APARTMENT, id);
+        List<GraphVo> graphVoList = graphInfoMapper.selectListByItemTypeAndId(ItemType.APARTMENT, id);
 
         // 3. 查询标签列表
         List<LabelInfo> labelInfoList = labelInfoMapper.selectListByApartmentId(id);
@@ -191,12 +196,51 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
         // 6. 组装结果
         ApartmentDetailVo apartmentDetailVo = new ApartmentDetailVo();
         BeanUtils.copyProperties(apartmentInfo, apartmentDetailVo);
-        apartmentDetailVo.setGraphVoList(graphVoList2);
+        apartmentDetailVo.setGraphVoList(graphVoList);
         apartmentDetailVo.setLabelInfoList(labelInfoList);
         apartmentDetailVo.setFacilityInfoList(facilityInfoList);
         apartmentDetailVo.setFeeValueVoList(feeValueList);
 
         return apartmentDetailVo;
+    }
+
+    /**
+     * 根据id删除公寓信息
+     * @param id 公寓id
+     */
+    @Override
+    public void removeAartmentById(Long id) {
+
+        // 统计该公寓下的房间个数
+        LambdaQueryWrapper<RoomInfo> roomQueryWrapper = Wrappers.lambdaQuery(RoomInfo.class).eq(RoomInfo::getApartmentId, id);
+        Long roomCount = roomInfoMapper.selectCount(roomQueryWrapper);
+        if (roomCount > 0) {
+            // 终止删除，并响应提示信息
+            throw new LeaseException(ResultCodeEnum.ADMIN_APARTMENT_DELETE_ROOM);
+        }
+
+        super.removeById(id);
+        // 1.删除图片列表
+        LambdaQueryWrapper<GraphInfo> graphQueryWrapper = Wrappers.lambdaQuery(GraphInfo.class)
+                .eq(GraphInfo::getItemType, ItemType.APARTMENT)
+                // 表示这个图片属于哪个公寓
+                .eq(GraphInfo::getItemId, id);
+        graphInfoService.remove(graphQueryWrapper);
+
+        // 2.删除配套列表
+        LambdaQueryWrapper<ApartmentFacility> facilityQueryWrapper = Wrappers.lambdaQuery(ApartmentFacility.class)
+                .eq(ApartmentFacility::getApartmentId, id);
+        apartmentFacilityService.remove(facilityQueryWrapper);
+
+        // 3.删除标签列表
+        LambdaQueryWrapper<ApartmentLabel> labelQueryWrapper = Wrappers.lambdaQuery(ApartmentLabel.class)
+                .eq(ApartmentLabel::getApartmentId, id);
+        apartmentLabelService.remove(labelQueryWrapper);
+
+        // 4.删除杂费列表
+        LambdaQueryWrapper<ApartmentFeeValue> feeQueryWrapper = Wrappers.lambdaQuery(ApartmentFeeValue.class)
+                .eq(ApartmentFeeValue::getApartmentId, id);
+        apartmentFeeValueService.remove(feeQueryWrapper);
     }
 }
 

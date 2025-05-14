@@ -8,7 +8,8 @@
         select
             name,
             url
-        from graph_info
+        from
+            graph_info
         where
         is_deleted = 0
         and item_type = #{itemType}

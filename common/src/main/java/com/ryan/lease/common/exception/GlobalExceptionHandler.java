@@ -23,4 +23,17 @@ public class GlobalExceptionHandler {
         // 返回一个表示失败的Result对象，告知客户端发生了错误
         return Result.fail();
     }
+
+    /**
+     * 全局异常处理器方法：专门处理LeaseException，
+     * 虽然这两个方法方法名一样，但是会有精确匹配原则，抛出LeaseException就走这个方法
+     * @param e LeaseException异常对象
+     * @return
+     */
+    @ExceptionHandler(LeaseException.class)
+    @ResponseBody
+    public Result handle(LeaseException e) {
+        e.printStackTrace();
+        return Result.fail(e.getCode(), e.getMessage());
+    }
 }

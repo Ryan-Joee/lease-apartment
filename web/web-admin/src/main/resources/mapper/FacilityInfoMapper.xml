@@ -5,25 +5,23 @@
 <mapper namespace="com.ryan.lease.web.admin.mapper.FacilityInfoMapper">
 
     <select id="selectListByApartmentId" resultType="com.ryan.lease.model.entity.FacilityInfo">
-
         select
             id,
             type,
             name,
             icon
-        from facility_info
+        from
+            facility_info
         where
             is_deleted = 0
-        and
-            id in (
+        and id in (
                 select
                     facility_id
-                from apartment_facility
+                from
+                    apartment_facility
                 where
                     is_deleted = 0
-                  and
-                    apartment_id = #{id}
+                  and apartment_id = #{id}
             )
-
     </select>
 </mapper>
