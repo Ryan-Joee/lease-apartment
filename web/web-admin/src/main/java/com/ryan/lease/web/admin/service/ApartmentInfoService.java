@@ -29,4 +29,11 @@ public interface ApartmentInfoService extends IService<ApartmentInfo> {
      * @return 分页查询的结果
      */
     IPage<ApartmentItemVo> pageItem(Page page, ApartmentQueryVo queryVo);
+
+    /**
+     * 根据ID获取公寓详细信息
+     * @param id 前端传来的公寓id
+     * @return ApartmentDetailVo
+     */
+    ApartmentDetailVo getDetailById(Long id);
 }

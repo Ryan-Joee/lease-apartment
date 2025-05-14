@@ -14,6 +14,12 @@ import java.util.List;
 */
 public interface LabelInfoMapper extends BaseMapper<LabelInfo> {
 
+    /**
+     * 查询标签列表
+     * @param id 公寓id
+     * @return List<LabelInfo>
+     */
+    List<LabelInfo> selectListByApartmentId(Long id);
 }
 
 

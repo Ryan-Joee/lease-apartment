@@ -4,4 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ryan.lease.web.admin.mapper.GraphInfoMapper">
 
+    <select id="selectListByItemTypeAndId" resultType="com.ryan.lease.web.admin.vo.graph.GraphVo">
+        select
+            name,
+            url
+        from graph_info
+        where
+        is_deleted = 0
+        and item_type = #{itemType}
+        and item_id = #{id} /*item_id 表示所属公寓的公寓id*/
+    </select>
 </mapper>
