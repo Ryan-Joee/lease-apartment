@@ -146,6 +146,7 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
             }
             apartmentLabelService.saveBatch(apartmentLabelList);
         }
+
         // 4.插入杂费列表
         List<Long> feeValueIdList = apartmentSubmitVo.getFeeValueIds();
         if (!CollectionUtils.isEmpty(feeValueIdList)) {
