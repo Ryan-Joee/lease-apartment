@@ -20,6 +20,13 @@ public interface LabelInfoMapper extends BaseMapper<LabelInfo> {
      * @return List<LabelInfo>
      */
     List<LabelInfo> selectListByApartmentId(Long id);
+
+    /**
+     * 根据房间id查询LabelInfo
+     * @param id 房间id
+     * @return List<LabelInfo>
+     */
+    List<LabelInfo> selectListByRoomId(Long id);
 }
 
 

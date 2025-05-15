@@ -20,4 +20,25 @@ public interface RoomInfoService extends IService<RoomInfo> {
      * @param roomSubmitVo 房间详细信息
      */
     void saveOrUpdateRoom(RoomSubmitVo roomSubmitVo);
+
+    /**
+     * 根据条件分页查询房间列表
+     * @param page 分页条件
+     * @param queryVo 分页条件
+     * @return  IPage<RoomItemVo>
+     */
+    IPage<RoomItemVo> pageRoomItemByQuery(IPage<RoomItemVo> page, RoomQueryVo queryVo);
+
+    /**
+     * 根据id获取房间详细信息
+     * @param id 房间id
+     * @return RoomDetailVo
+     */
+    RoomDetailVo getRoomDetailById(Long id);
+
+    /**
+     * 根据id删除房间信息
+     * @param id 房间id
+     */
+    void removeRoomById(Long id);
 }
