@@ -1,5 +1,6 @@
 package com.ryan.lease.web.admin.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ryan.lease.model.entity.LeaseAgreement;
 import com.ryan.lease.web.admin.vo.agreement.AgreementQueryVo;
 import com.ryan.lease.web.admin.vo.agreement.AgreementVo;
@@ -14,6 +15,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 */
 public interface LeaseAgreementMapper extends BaseMapper<LeaseAgreement> {
 
+    /**
+     * 根据条件分页查询租约列表
+     * @param page 分页条件
+     * @param queryVo 查询条件
+     * @return IPage<AgreementVo>
+     */
+    IPage<AgreementVo> pageAgreement(Page<AgreementVo> page, AgreementQueryVo queryVo);
 }
 
 
