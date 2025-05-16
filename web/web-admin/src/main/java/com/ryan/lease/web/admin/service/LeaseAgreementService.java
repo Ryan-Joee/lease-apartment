@@ -21,4 +21,11 @@ public interface LeaseAgreementService extends IService<LeaseAgreement> {
      * @return IPage<AgreementVo>
      */
     IPage<AgreementVo> pageAgreement(Page<AgreementVo> page, AgreementQueryVo queryVo);
+
+    /**
+     * 根据id查询租约信息
+     * @param id 租约id
+     * @return AgreementVo
+     */
+    AgreementVo getAgreementById(Long id);
 }
