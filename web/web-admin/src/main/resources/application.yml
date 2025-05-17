@@ -21,6 +21,12 @@ spring:
     restart:
       enabled: true
       additional-paths: src/main/java
+  data:
+    redis:
+      host: 192.168.210.101
+      port: 6379
+      database: 0
+      password: 123456
 
 #用于打印框架生成的sql语句，便于调试
 mybatis-plus:
