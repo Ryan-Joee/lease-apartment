@@ -123,7 +123,7 @@ public class RoomInfoServiceImpl extends ServiceImpl<RoomInfoMapper, RoomInfo>
             for (GraphVo graphVo : graphVoList) {
                 GraphInfo graphInfo = new GraphInfo();
                 // 图片信息的id == 前端传过来的房间id ==> 表示这个图片属于哪个房间
-                graphInfo.setId(roomSubmitVo.getId());
+                graphInfo.setItemId(roomSubmitVo.getId());
                 graphInfo.setItemType(ItemType.ROOM);
                 graphInfo.setName(graphVo.getName());
                 graphInfo.setUrl(graphVo.getUrl());

@@ -12,6 +12,7 @@ import com.ryan.lease.web.admin.mapper.SystemUserMapper;
 import com.ryan.lease.web.admin.service.LoginService;
 import com.ryan.lease.web.admin.vo.login.CaptchaVo;
 import com.ryan.lease.web.admin.vo.login.LoginVo;
+import com.ryan.lease.web.admin.vo.system.user.SystemUserInfoVo;
 import com.wf.captcha.SpecCaptcha;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +81,19 @@ public class LoginServiceImpl implements LoginService {
             throw new LeaseException(ResultCodeEnum.ADMIN_ACCOUNT_ERROR);
         }
         return JwtUtil.createToken(systemUser.getId(), systemUser.getUsername());
+    }
+
+    /**
+     * 获取登陆用户个人信息
+     * @param userId 用户id
+     * @return SystemUserInfoVo
+     */
+    @Override
+    public SystemUserInfoVo getLoginUserInfoById(Long userId) {
+        SystemUser systemUser = systemUserMapper.selectById(userId);
+        SystemUserInfoVo systemUserInfoVo = new SystemUserInfoVo();
+        systemUserInfoVo.setName(systemUser.getName());
+        systemUserInfoVo.setAvatarUrl(systemUser.getAvatarUrl());
+        return systemUserInfoVo;
     }
 }

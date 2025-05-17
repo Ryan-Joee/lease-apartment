@@ -108,8 +108,9 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
             List<GraphInfo>  graphInfoList = new ArrayList<>();
             for (GraphVo graphVo : graphVoList) {
                 GraphInfo graphInfo = new GraphInfo();
-                graphInfo.setId(apartmentSubmitVo.getId());
+//                graphInfo.setId(apartmentSubmitVo.getId());
                 graphInfo.setItemType(ItemType.APARTMENT);
+                graphInfo.setItemId(apartmentSubmitVo.getId());
                 graphInfo.setName(graphVo.getName());
                 graphInfo.setUrl(graphVo.getUrl());
                 graphInfoList.add(graphInfo);

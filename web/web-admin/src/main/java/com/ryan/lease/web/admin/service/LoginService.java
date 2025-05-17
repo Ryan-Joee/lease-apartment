@@ -18,4 +18,11 @@ public interface LoginService {
      * @return jwt
      */
     String login(LoginVo loginVo);
+
+    /**
+     * 获取登陆用户个人信息
+     * @param userId 用户id
+     * @return SystemUserInfoVo
+     */
+    SystemUserInfoVo getLoginUserInfoById(Long userId);
 }
