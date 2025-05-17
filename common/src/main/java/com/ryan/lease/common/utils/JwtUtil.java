@@ -1,7 +1,8 @@
 package com.ryan.lease.common.utils;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.ryan.lease.common.exception.LeaseException;
+import com.ryan.lease.common.result.ResultCodeEnum;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;
@@ -20,4 +21,24 @@ public class JwtUtil {
                 .compact();
         return jwt;
     }
+
+    public static Claims parseToken(String token){
+
+        if (token==null){
+            throw new LeaseException(ResultCodeEnum.ADMIN_LOGIN_AUTH);
+        }
+
+        try{
+            JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
+            return jwtParser.parseClaimsJws(token).getBody();
+        }catch (ExpiredJwtException e){
+            throw new LeaseException(ResultCodeEnum.TOKEN_EXPIRED);
+        }catch (JwtException e){
+            throw new LeaseException(ResultCodeEnum.TOKEN_INVALID);
+        }
+    }
+
+/*    public static void main(String[] args) {
+        System.out.println(createToken(2L, "user"));
+    }*/
 }
