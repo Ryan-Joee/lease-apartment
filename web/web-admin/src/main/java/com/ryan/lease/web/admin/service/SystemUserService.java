@@ -1,5 +1,6 @@
 package com.ryan.lease.web.admin.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ryan.lease.model.entity.SystemUser;
 import com.ryan.lease.web.admin.vo.system.user.SystemUserItemVo;
 import com.ryan.lease.web.admin.vo.system.user.SystemUserQueryVo;
@@ -13,4 +14,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface SystemUserService extends IService<SystemUser> {
 
+    /**
+     * 根据条件分页查询后台用户列表
+     * @param page 分页条件
+     * @param queryVo 查询条件
+     * @return IPage<SystemUserItemVo>
+     */
+    IPage<SystemUserItemVo> pageSystemUser(Page<SystemUser> page, SystemUserQueryVo queryVo);
 }
