@@ -21,4 +21,11 @@ public interface SystemUserService extends IService<SystemUser> {
      * @return IPage<SystemUserItemVo>
      */
     IPage<SystemUserItemVo> pageSystemUser(Page<SystemUser> page, SystemUserQueryVo queryVo);
+
+    /**
+     * 根据ID查询后台用户信息
+     * @param id 用户ID
+     * @return SystemUserItemVo
+     */
+    SystemUserItemVo getSystemUserById(Long id);
 }
